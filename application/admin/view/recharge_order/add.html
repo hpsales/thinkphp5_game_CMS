@@ -1,0 +1,102 @@
+{include file="layout/top" /}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal" method="POST" action="{:url('admin/OrderLst/add')}" onsubmit="return false" >
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">{$Think.lang.base_param}</a></li>
+                        <li class="pull-right"><a href="javascript:history.back(-1)" class="btn btn-sm" style="padding:10px 2px;"><i class="fa fa-list"></i> {$Think.lang.back}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>{$Think.lang.total_all}</label>
+                                <div class="col-sm-7"><input class="form-control" name="total_all" value="0.000" placeholder="{$Think.lang.total_all}"></div>
+                            </div>
+                    
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>手机号/姓名</label>
+                                <div class="col-sm-7">
+                                     <select class="form-control select2" name="agent_id" style="width:100%;">
+                                        {volist name="$sn" id="vo"}
+                                        <option value="{$vo.id}">{$vo.account}/{$vo.admin_name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>{$Think.lang.pro}</label>
+                                <div class="col-sm-7">
+                                     <select class="form-control select2" name="product_id" style="width:100%;">
+                                        {volist name="$pro" id="vo"}
+                                        <option value="{$vo.id}">{$vo.name}</option>
+                                        {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{$Think.lang.create_time}</label>
+                                <div class="col-sm-7"><input class="form-control datepicker" data-date-format="yyyy-mm-dd" name="add_time" value="" placeholder="{$Think.lang.create_time}"></div>
+                            </div>              
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">{$Think.lang.state_order}</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control select2" name="state_order" style="width:100%;">
+                                        <option value="3" >申请结算</option>
+                                        <option value="2" >未结算</option>
+                                        <option selected='selected' value="1" >已结算</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>    
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-7">
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right submits" data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; {$Think.lang.submit}">{$Think.lang.submit}</button>
+                            </div>
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning">{$Think.lang.reset}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+
+$(function(){
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+     $('.datepicker').datepicker();
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $(".select2").select2({language:"zh-CN"});
+    $('#fileupload_').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            if (data.result.error == 0) {
+                var up_url = data.result.url.trim();
+                obj.prev().val(up_url );
+                if (obj.children('img').length>0) {
+                    obj.find('img').attr('src',up_url );
+                }
+            } else {
+                $.amaran({'message':data.result.info});
+            }      
+        }
+    });
+    $(".up_img").on('click',function(){
+        obj = $(this);
+        $('#fileupload_').trigger('click');
+    })
+})
+</script>
+{include file="layout/bottom" /}

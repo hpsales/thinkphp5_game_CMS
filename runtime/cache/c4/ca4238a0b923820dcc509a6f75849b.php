@@ -1,0 +1,4 @@
+<?php
+//000000000000
+ exit();?>
+a:24:{s:11:"SysUser/add";i:1;s:11:"SysUser/lst";i:1;s:16:"SysUser/recharge";i:1;s:12:"SysUser/edit";i:1;s:21:"SysUser/recharge_flow";i:1;s:14:"UserRebate/add";i:1;s:17:"UserRebate/delete";i:1;s:18:"RechargeOrder/edit";i:1;s:20:"RechargeOrder/delete";i:1;s:13:"Privilege/add";i:1;s:14:"Privilege/edit";i:1;s:16:"Privilege/delete";i:1;s:8:"Role/add";i:1;s:11:"Role/delete";i:1;s:9:"Role/edit";i:1;s:10:"Log/delete";i:1;s:15:"Database/backup";i:1;s:18:"Database/dowonload";i:1;s:16:"Database/restore";i:1;s:15:"Database/delete";i:1;s:16:"ConfigField/save";i:1;s:15:"ConfigField/add";i:1;s:18:"ConfigField/delete";i:1;s:16:"ConfigField/edit";i:1;}

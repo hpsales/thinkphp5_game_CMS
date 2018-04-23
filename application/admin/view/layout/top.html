@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{$_page_title}</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+<!-- 引入css文件   -->
+{include file="layout/css" /}
+<link rel="stylesheet" type="text/css" href="{$Think.ADMIN_JS}/webuploader/webuploader.css"/>
+<script type="text/javascript" src="{$Think.ADMIN_JS}/webuploader/webuploader.min.js"></script>
+<link href="/favicon.ico" rel="shortcut icon">
+</head>
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="wrapper">
+<!-- 引入头部文件   -->
+{include file="layout/header" /}
+
+
+{include file="layout/menu" /}
+
+
+<!-- 内容框 不能分开的-->
+<div class="content-wrapper" id="pjax-container">
+    
+  <section class="content-header">
+    <h1>
+      {$_page_title}
+    </h1>
+    <ol class="breadcrumb">
+      <li><a href="#"><i class="fa fa-dashboard"></i> {$_page_btn_name}</a></li>
+    </ol>
+  </section>

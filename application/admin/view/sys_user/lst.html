@@ -1,0 +1,156 @@
+{include file="layout/top" /}
+<style>
+.screen-box .box-tools .input-group .input-group-btn .btn{height:34px;}
+@media screen and (max-width:769px){
+    .screen-box > .box-tools{position:static;}
+    .screen-box > .pull-left{margin-bottom:10px;}
+    .screen-box .input-group{width:100% !important;}
+    .screen-box .select2-container{}
+    .screen-box .box-tools .input-group .pull-right{margin-bottom:10px;}
+    .screen-box .box-tools .input-group .pull-right,.screen-box .box-tools .input-group .pull-left,.screen-box .box-tools .input-group .pull-left .select2-container{width:100% !important;}
+    .screen-box .box-tools .input-group .input-group-btn{vertical-align:bottom;}
+}
+</style>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border screen-box">
+                    <h3 class="box-title"></h3>
+                    <div class="pull-left">
+                        {:authAction(CONTROLLER_NAME.'/add', 'create')} 
+                    </div>
+                    <div class="box-tools" style="top:10px;">
+                        <form action="{:search_url('search')}" method="GET" pjax-search="">
+                            <div class="input-group input-group-sm" style="width:600px">
+                                    <div class='pull-right' style="width:50%">
+                                        <input type="text" name="search" class="form-control" value="{:input('get.search')}" placeholder="{$Think.lang.search}" />
+                                    </div>
+                                    <div class='pull-left' style="width:50%">
+                                        <select name="r_city" class="form-control select2" placeholder="{$Think.lang.search}">
+                                            <option value="">--按代理所在城市--</option>
+                                            {volist name=":config('agent_city')" id='vo'}
+                                                <option {if condition="input('get.r_city') == $key"}selected='selected'{/if} value="{$key}">{$vo}</option>
+                                            {/volist}
+                                        </select>
+                                    </div>
+
+                                    <!-- <div class='pull-left' style="width:35%">
+                                        <select name="user_level" class="form-control select2" placeholder="{$Think.lang.search}">
+                                            <option value="">--按代理商级别查询--</option>
+                                            {volist name="$roleData" id='vo'}
+                                                <option {if condition="input('get.user_level') == $vo.id"}selected='selected'{/if} value="{$vo.id}">{$vo.role_name}</option>
+                                            {/volist}
+                                        </select>
+                                    </div> -->
+                                 
+                                    <div class="input-group-btn">
+                                        <button type="submit" class="btn btn-default sreachs"><i class="fa fa-search"></i></button>
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-bordered table-hover table-sort">
+                        <tr>
+                            <th width="35"><input type="checkbox" class="minimal checkbox-toggle"></th>
+                            <th>{$Think.lang.id}{:table_sort('id')}</th>
+                            <th>{$Think.lang.nick_name}{:table_sort('nick_name')}</th>
+                            {if condition='$role_type == 1'}
+                            <th>用户帐号</th>
+                            <th>{$Think.lang.user_level}{:table_sort('user_level')}</th>
+                            {/if}
+                            <th>上级代理</th>
+                            <th>{$Think.lang.user_name}{:table_sort('user_name')}</th>
+                            
+                            <th>{$Think.lang.state}{:table_sort('state')}</th>
+                            <th>{$Think.lang.user_coins}{:table_sort('user_coins')}</th>
+                            <th>所在城市{:table_sort('r_city')}</th>
+                            <th>{$Think.lang.addtime}</th>
+                            <th>{$Think.lang.action}</th>
+                        </tr>
+                        {volist name="data" id="vo"}
+                        <tr>
+                            <td style="vertical-align:middle"><input type="checkbox" name="id[]" value="{$vo.id}" class="minimal"></td>
+                            <td style="vertical-align:middle">{$vo.id}</td>
+                            <td style="vertical-align:middle">{$vo.nick_name}</td>
+                            {if condition='$role_type == 1'}
+                            <td style="vertical-align:middle">{$vo.user_name}</td>
+                            <td style="vertical-align:middle">{$vo.user_level}</td>
+                            {/if}
+                            <td style="vertical-align:middle">{$vo.parent_id?$vo->SysUser2->nick_name:'顶级代理'}</td>
+                            <td style="vertical-align:middle">{$vo.user_name}</td>
+                            <td>
+                                <a href="javascript:void(0);" data-id="{$vo.id}" data-field="state" 
+                                data-value="{$vo.state}" data-url="{:url('edit', 'id='.$vo['id'])}" 
+                                class='editimg fa {if condition=" $vo.state == 1 "}fa-check-circle text-green{else /}fa-times-circle text-red{/if}'></a>
+                            </td>
+                            <td style="vertical-align:middle">{$vo.user_coins}</td>
+                            <td>{:config('agent_city')[$vo.r_city]}</td>   
+                            <td style="vertical-align:middle">{$vo.addtime}</td>
+                            <td style="vertical-align:middle">
+                                {if condition="check_child($vo.id)>0"}
+                                {:authAction(CONTROLLER_NAME.'/lst', 'child', ['parent_id' => $vo.id,'page'=>input('get.page')])} 
+                                {else if/}
+                                {:authAction(CONTROLLER_NAME.'/lst', 'child2', ['parent_id' => $vo.id,'page'=>input('get.page')])} 
+                                {/if}
+                                {:authAction(CONTROLLER_NAME.'/recharge', 'recharge', ['id' => $vo.id,'page'=>input('get.page')])}
+                                {if condition="$role_type == 1 and $vo.user_level == '后台销售'"}
+                                {:authAction(CONTROLLER_NAME.'/recharge_flow', 'recharge_flow', ['oper_id' => $vo.id,'page'=>input('get.page')])}  
+                                {/if}
+                                {:authAction(CONTROLLER_NAME.'/edit', 'edit', ['id' => $vo.id,'page'=>input('get.page')])} 
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    {$data->render()}
+                </div>
+            </div>
+        </div>r
+    </div>
+</section>
+<script type="text/javascript">
+$(function(){
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+    
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $(".select2").select2({language:"zh-CN"});
+    
+    /*全选-反选*/
+    $('.checkbox-toggle').on('ifChecked', function(event){
+        var _this = $(this);
+        var _table = _this.closest('.table');
+        _table.find("tr td input[type='checkbox']").iCheck("check");
+    });
+    $('.checkbox-toggle').on('ifUnchecked', function(event){
+        var _this = $(this);
+        var _table = _this.closest('.table');
+        _table.find("tr td input[type='checkbox']").iCheck("uncheck");
+    });
+    
+    $('.editable').editable({
+        emptytext: "empty",
+        params: function(params) {      //参数
+            var data = {};
+            data['id'] = params.pk;
+            data[params.name] = params.value;
+            return data;
+        },
+        success: function(response, newValue) {
+            var res = $.parseJSON( response );
+            if(res.status == 1){
+            }else{
+                return res.info;
+            }
+        }
+    });
+})
+</script>
+{include file="layout/bottom" /}

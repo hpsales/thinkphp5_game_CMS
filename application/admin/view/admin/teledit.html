@@ -1,0 +1,77 @@
+{include file="layout/top" /}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal" method="POST" action="{:url('admin/Admin/teledit')}" onsubmit="return false" >
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">{$Think.lang.base_param}</a></li>
+                        <li class="pull-right"><a href="javascript:history.back(-1)" class="btn btn-sm" style="padding:10px 2px;"><i class="fa fa-list"></i> {$Think.lang.back}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab1">
+                     
+                            
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>{$Think.lang.account}</label>
+                                <div class="col-sm-7"><input class="form-control" name="account" value="" placeholder="{$Think.lang.account_v}"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>{$Think.lang.password}</label>
+                                <div class="col-sm-7"><input class="form-control" name="password" value="" placeholder="{$Think.lang.password}" type="password"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label"><span>* </span>{$Think.lang.repassword}</label>
+                                <div class="col-sm-7"><input class="form-control" name="repassword" value="" placeholder="{$Think.lang.repassword}" type="password"></div>
+                            </div>
+                            
+                        </div>    
+                    </div>
+                    <div class="box-footer">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-7">
+                            <div class="btn-group pull-right">
+                                <button type="submit" class="btn btn-info pull-right submits" data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; {$Think.lang.submit}">{$Think.lang.submit}</button>
+                            </div>
+                            <div class="btn-group pull-left">
+                                <button type="reset" class="btn btn-warning">{$Think.lang.reset}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+
+$(function(){
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+    
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $(".select2").select2({language:"zh-CN"});
+    $('#fileupload_').fileupload({
+        dataType: 'json',
+        done: function (e, data) {
+            if (data.result.error == 0) {
+                var up_url = data.result.url.trim();
+                obj.prev().val(up_url );
+                if (obj.children('img').length>0) {
+                    obj.find('img').attr('src',up_url );
+                }
+            } else {
+                $.amaran({'message':data.result.info});
+            }      
+        }
+    });
+    $(".up_img").on('click',function(){
+        obj = $(this);
+        $('#fileupload_').trigger('click');
+    })
+})
+</script>
+{include file="layout/bottom" /}
